@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Dance Studio - Private Class Check-in</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root { --primary-color: #bc4e9c; --secondary-color: #ff3366; --bg-dark: #0f0c1b; --card-bg: rgba(30, 25, 51, 0.75); --text-main: #ffffff; --text-sub: #b3b3cc; }
@@ -29,14 +27,14 @@
         .stat-value span { font-size: 12px; font-weight: 300; color: var(--text-sub); margin-left: 3px; }
         .history-scroll-container { max-height: 180px; overflow-y: auto; padding-right: 5px; }
         .history-item { background: rgba(188, 78, 156, 0.1); border: 1px solid rgba(188, 78, 156, 0.3); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-        #loader { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        #loader { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; z-index: 9999; font-size: 16px; }
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
     <div id="loader">กำลังเปิดระบบเช็คอิน Private...</div>
     <div class="app-container" id="main-content" style="display: none;">
-        <div class="logo-container"><img src="logo.png" class="logo-circle" alt="A Dance Studio"></div>
+        <div class="logo-container"><img src="logo.png" class="logo-circle" alt="Logo" onerror="this.src='https://via.placeholder.com/150'"></div>
         <div class="app-title">👑 เช็คอิน PRIVATE CLASS 👑</div>
         <div class="card">
             <div class="profile-section">
@@ -51,37 +49,35 @@
         </div>
         <div class="card" style="text-align: center;">
             <div style="font-size: 15px; font-weight: 500; margin-bottom: 5px;">เช็คอินคลาสส่วนตัว</div>
-            <div style="font-size: 12px; color: var(--text-sub); margin-bottom: 15px;">คลิกปุ่มด้านล่างเพื่อบันทึกเวลาเข้าเรียน Private</div>
             <button class="checkin-btn" id="btn-checkin" onclick="submitCheckIn()"><span>✓</span> เช็คอิน Private Class</button>
         </div>
         <div class="card">
             <div class="status-title"><span>📊</span> สถานะคอร์ส Private Class</div>
-            <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">คอร์สของคุณ: <span id="course-name" style="color: #fff; font-weight: 500;">กำลังดึงข้อมูล...</span></div>
+            <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">คอร์สของคุณ: <span id="course-name" style="color: #fff;">กำลังดึงข้อมูล...</span></div>
             <div class="grid-stats">
-                <div class="stat-box"><div class="stat-label">จำนวนเครดิตทั้งหมด</div><div class="stat-value" id="stat-total">- <span>เครดิต</span></div></div>
-                <div class="stat-box"><div class="stat-label">ใช้ไปแล้ว</div><div class="stat-value" id="stat-used" style="color: var(--secondary-color);">- <span>เครดิต</span></div></div>
-                <div class="stat-box"><div class="stat-label">คงเหลือ</div><div class="stat-value" id="stat-remaining" style="color: #06C755;">- <span>เครดิต</span></div></div>
-                <div class="stat-box"><div class="stat-label">วันเริ่มใช้ครั้งแรก</div><div class="stat-value" id="stat-start" style="font-size: 14px; padding-top: 4px;">-</div></div>
+                <div class="stat-box"><div class="stat-label">เครดิตทั้งหมด</div><div class="stat-value" id="stat-total">-</div></div>
+                <div class="stat-box"><div class="stat-label">ใช้ไปแล้ว</div><div class="stat-value" id="stat-used" style="color: var(--secondary-color);">-</div></div>
+                <div class="stat-box"><div class="stat-label">คงเหลือ</div><div class="stat-value" id="stat-remaining" style="color: #06C755;">-</div></div>
+                <div class="stat-box"><div class="stat-label">วันเริ่มใช้</div><div class="stat-value" id="stat-start" style="font-size: 14px;">-</div></div>
             </div>
-            <div style="font-size: 12px; color: var(--text-sub); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">วันหมดอายุคอร์ส: <span id="stat-expire" style="color: #fff;">-</span></div>
+            <div style="font-size: 12px; color: var(--text-sub); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">วันหมดอายุ: <span id="stat-expire" style="color: #fff;">-</span></div>
         </div>
         <div class="card" style="padding: 15px 20px;">
             <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">🕒 ประวัติการเช็คอิน Private</div>
-            <div class="history-scroll-container" id="history-container"><div style="color: #555577; text-align: center; font-size: 13px; padding: 10px 0;">กำลังดึงประวัติ...</div></div>
+            <div class="history-scroll-container" id="history-container"><div style="color: #555577; text-align: center;">กำลังดึงประวัติ...</div></div>
         </div>
     </div>
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxKPZjjblBjEgtN2QDp2GGXUXIzhWjP70XtcvilZRigYA27LmjY7QgtETgZXe0t7kWx/exec'; 
-        const LIFF_ID = '2010490454-8e8UJXYI'; 
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxKPzjjblBjEgtN2QDp2GGXUXIzhWjP70XtcvilZRigYA27LmjY7QgtETgZXe0t7kWx/exec'; 
+        const LIFF_ID = '2010490454-8e8UJXYI';
         
         let currentUserId = '', currentDisplayName = '';
         async function main() {
             try {
-                await liff.init({ liffId: LIFF_ID }); 
+                await liff.init({ liffId: LIFF_ID });
                 if (liff.isLoggedIn()) {
                     const profile = await liff.getProfile();
-                    currentUserId = profile.userId;
-                    currentDisplayName = profile.displayName;
+                    currentUserId = profile.userId; currentDisplayName = profile.displayName;
                     document.getElementById('user-id').innerText = "ID: " + currentUserId;
                     document.getElementById('user-name').innerText = currentDisplayName;
                     if (profile.pictureUrl) document.getElementById('user-picture').src = profile.pictureUrl;
@@ -89,38 +85,37 @@
                     document.getElementById('main-content').style.display = 'block';
                     fetchUserData(currentUserId);
                 } else { liff.login(); }
-            } catch (error) { document.getElementById('loader').innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อระบบ LINE"; }
+            } catch (e) { document.getElementById('loader').innerText = "LIFF Init Error"; }
         }
         async function fetchUserData(userId) {
             try {
-                const response = await fetch(`${WEB_APP_URL}?userId=${userId}&classType=private`, { method: 'GET', redirect: 'follow' });
-                const resData = await response.json();
-                if (resData.found) {
-                    document.getElementById('course-name').innerText = resData.courseName || '-';
-                    document.getElementById('stat-total').innerHTML = (resData.total || 0) + " <span>เครดิต</span>";
-                    document.getElementById('stat-used').innerHTML = (resData.used || 0) + " <span>เครดิต</span>";
-                    document.getElementById('stat-remaining').innerHTML = (resData.remaining || 0) + " <span>เครดิต</span>";
-                    document.getElementById('stat-start').innerText = resData.startDate || '-';
-                    document.getElementById('stat-expire').innerText = resData.expireDate || '-';
-                    const historyContainer = document.getElementById('history-container');
-                    if (resData.checkInHistory && resData.checkInHistory.length > 0) {
-                        let historyHTML = '';
-                        resData.checkInHistory.forEach((item) => {
-                            historyHTML += `<div class="history-item"><div style="color: #ff3366;">👑 <span style="color: #fff;">${item.date}</span></div><div style="color: var(--text-sub); font-size: 12px;">${item.time}</div></div>`;
+                const res = await fetch(`${WEB_APP_URL}?userId=${userId}&classType=private`, { method: 'GET', redirect: 'follow' });
+                const data = await res.json();
+                if (data.found) {
+                    document.getElementById('course-name').innerText = data.courseName || '-';
+                    document.getElementById('stat-total').innerText = (data.total || 0) + " เครดิต";
+                    document.getElementById('stat-used').innerText = (data.used || 0) + " เครดิต";
+                    document.getElementById('stat-remaining').innerText = (data.remaining || 0) + " เครดิต";
+                    document.getElementById('stat-start').innerText = data.startDate || '-';
+                    document.getElementById('stat-expire').innerText = data.expireDate || '-';
+                    const hContainer = document.getElementById('history-container');
+                    if (data.checkInHistory && data.checkInHistory.length > 0) {
+                        let html = '';
+                        data.checkInHistory.forEach(item => {
+                            html += `<div class="history-item"><div style="color: #ff3366;">👑 <span style="color:#fff;">${item.date}</span></div><div style="color:#b3b3cc; font-size:12px;">${item.time}</div></div>`;
                         });
-                        historyContainer.innerHTML = historyHTML;
-                    } else { historyContainer.innerHTML = '<div style="color: #555577; text-align: center; font-size: 13px; padding: 10px 0;">ยังไม่มีข้อมูลประวัติเช็คอิน Private ค่ะ</div>'; }
-                } else { document.getElementById('course-name').innerText = "ไม่พบสิทธิ์คอร์ส Private"; }
-            } catch (err) { document.getElementById('course-name').innerText = "ขัดข้องชั่วคราว"; }
+                        hContainer.innerHTML = html;
+                    } else { hContainer.innerHTML = '<div style="color:#555577; text-align:center;">ยังไม่มีประวัติ</div>'; }
+                } else { document.getElementById('course-name').innerText = "ไม่พบข้อมูลสิทธิ์"; }
+            } catch (e) { document.getElementById('course-name').innerText = "โหลดข้อมูลไม่สำเร็จ"; }
         }
         async function submitCheckIn() {
             const btn = document.getElementById('btn-checkin');
-            btn.disabled = true; btn.innerText = "กำลังบันทึกเวลา...";
+            btn.disabled = true; btn.innerText = "กำลังบันทึก...";
             try {
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: currentUserId, userName: currentDisplayName, classType: 'private' }) });
-                alert("บันทึกการเข้าเรียนคลาส Private สำเร็จเรียบร้อยแล้วค่ะ! 👑✨");
-                location.reload();
-            } catch (error) { alert("บันทึกเวลาสำเร็จเรียบร้อยค่ะ"); location.reload(); }
+                alert("เช็คอินสำเร็จ! ✨"); location.reload();
+            } catch (e) { alert("บันทึกสำเร็จ"); location.reload(); }
         }
         main();
     </script>

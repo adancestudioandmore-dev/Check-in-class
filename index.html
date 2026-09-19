@@ -89,7 +89,7 @@
         }
         async function fetchUserData(userId) {
             try {
-                const res = await fetch(`${WEB_APP_URL}?userId=${userId}&classType=group`, { method: 'GET', redirect: 'follow' });
+                const res = await fetch(`${WEB_APP_URL}?userId=${userId}&classType=Users`, { method: 'GET', redirect: 'follow' });
                 const data = await res.json();
                 if (data.found) {
                     document.getElementById('course-name').innerText = data.courseName || '-';
@@ -113,7 +113,7 @@
             const btn = document.getElementById('btn-checkin');
             btn.disabled = true; btn.innerText = "กำลังบันทึก...";
             try {
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: currentUserId, userName: currentDisplayName, classType: 'group' }) });
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: currentUserId, userName: currentDisplayName, classType: 'Users' }) });
                 alert("เช็คอินสำเร็จ! ✨"); location.reload();
             } catch (e) { alert("บันทึกสำเร็จ"); location.reload(); }
         }
